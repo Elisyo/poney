@@ -5,10 +5,17 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
+
+void initialiser_signaux(void){
+	if (signal(SIGPIPE ,SIG_IGN) == SIG_ERR)
+		perror ("signal");
+}
 
 int creer_serveur (int port){
 	int socket_serveur ;
 	int optval = 1;
+	initialiser_signaux();
 	socket_serveur = socket(AF_INET ,SOCK_STREAM ,0);
 	if (socket_serveur == -1){
 		/* traitement de l ’ erreur */
@@ -33,7 +40,7 @@ int creer_serveur (int port){
 		perror("listen socket_serveur");
 		return -1;
 	}
-
 	return socket_serveur;
 }
+
 
