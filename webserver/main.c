@@ -2,27 +2,31 @@
 #include <string.h>
 #include <unistd.h>
 #include "socket.h"
+#include <stdio.h>
+#include <arpa/inet.h>
 
-int main(int argc, char ** argv){
-
-	if (argc > 1 && strcmp(argv [1] , "-advice") == 0) {
-		printf ("Don’t Panic !\n");
-		return 42;
+int connexion(int socket_serveur) {
+	int socket_client;
+	const char * message_bienvenue = " Bonjour , bienvenue sur mon serveur \n ";
+	socket_client = accept(socket_serveur, NULL, NULL);
+	if(socket_client == -1){
+		perror("accept");
+		return -1;
 	}
-	
-	if (argc > 1 && strcmp(argv [1] , "-server") == 0) {
-		printf ("Creation serveur !\n");
-		if(creer_serveur(8080) == -1){
-			printf("probleme creation serveur");
-			return -1;
-		}
-		return 42;
-	}
-
-
+	/* On peut maintenant dialoguer avec le client */
 	sleep(1);
-	printf ( "Need an advice ?\n" );
+	write(socket_client, message_bienvenue, strlen(message_bienvenue));
+	return socket_client;
+}
 
+int main(){
+	int socket_serveur;
+	socket_serveur = creer_serveur(8080);
+	if(socket_serveur == -1){
+		perror("probleme creation serveur\n");
+		return -1;
+	}
+	while(1)
+		connexion(socket_serveur);
 	return 0;
-
 }
