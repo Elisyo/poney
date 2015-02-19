@@ -84,7 +84,7 @@ int connexion(int socket_serveur) {
 				}
 			}else{
 				printf("%s\n", message_recu);
-				if(message_recu[0] == '\0' || message_recu[0] == '\n'){
+				if(strcmp(message_recu, "\r\n")){
 					printf("ligne vide");
 					break;
 				}
