@@ -6,8 +6,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+
 /*Gère la connexion au serveur*/
 int connexion(int socket_serveur) {
+
 	int socket_client;
 	char *message_recu = malloc(150);
 	int nbCaratere;
@@ -31,7 +33,9 @@ int connexion(int socket_serveur) {
 	return socket_client;
 }
 
+
 int main(){
+
 	int socket_serveur;
 	socket_serveur = creer_serveur(8080);
 	if(socket_serveur == -1){
